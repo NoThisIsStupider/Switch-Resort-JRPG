@@ -22,6 +22,10 @@ config/icon="res://icon.png"
 
 Events="*res://Mechanics/Events.cs"
 
+[editor_plugins]
+
+enabled=PoolStringArray( "mono_debugger" )
+
 [mono]
 
 debugger_agent/wait_timeout=20000
