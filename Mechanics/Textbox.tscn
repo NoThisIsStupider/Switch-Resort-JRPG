@@ -18,7 +18,7 @@ __meta__ = {
 
 [node name="Panel" type="Panel" parent="."]
 margin_right = 572.0
-margin_bottom = 101.0
+margin_bottom = 100.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -37,3 +37,5 @@ text = "Test
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Timer" type="Timer" parent="."]
