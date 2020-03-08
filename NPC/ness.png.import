@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/testTileset.png-75b85bbbf5c8f12ea7a1e0f466853ed3.stex"
+path="res://.import/ness.png-21879b966d9e4c77e38cb483f1e08a99.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://testTileset.png"
-dest_files=[ "res://.import/testTileset.png-75b85bbbf5c8f12ea7a1e0f466853ed3.stex" ]
+source_file="res://NPC/ness.png"
+dest_files=[ "res://.import/ness.png-21879b966d9e4c77e38cb483f1e08a99.stex" ]
 
 [params]
 

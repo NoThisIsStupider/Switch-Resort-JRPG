@@ -57,6 +57,7 @@
     <Compile Include="Mechanics\Textbox.cs" />
     <Compile Include="Mechanics\Events.cs" />
     <Compile Include="Player\OverworldPlayer.cs" />
+    <Compile Include="Player\ScreenEffects.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

@@ -1,11 +1,25 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Player/OverworldPlayer.cs" type="Script" id=1]
 [ext_resource path="res://Player/tempplayer.png" type="Texture" id=2]
 [ext_resource path="res://Mechanics/Textbox.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Player/ScreenEffects.cs" type="Script" id=4]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 7.42507
+
+[sub_resource type="Shader" id=6]
+code = "shader_type canvas_item; 
+
+uniform float fadeLevel = 0;
+
+void fragment() {
+	COLOR.a = fadeLevel;
+}"
+
+[sub_resource type="ShaderMaterial" id=7]
+shader = SubResource( 6 )
+shader_param/fadeLevel = 0.0
 
 [sub_resource type="Animation" id=2]
 resource_name = "FaceDown"
@@ -37,7 +51,7 @@ tracks/1/keys = {
 "values": [ Vector2( 1, 1 ) ]
 }
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=3]
 resource_name = "FaceLeft"
 length = 0.6
 loop = true
@@ -67,7 +81,7 @@ tracks/1/keys = {
 "values": [ Vector2( 1, 1 ) ]
 }
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=4]
 resource_name = "FaceRight"
 length = 0.6
 loop = true
@@ -97,8 +111,7 @@ tracks/1/keys = {
 "values": [ Vector2( -1, 1 ) ]
 }
 
-[sub_resource type="Animation" id=3]
-resource_name = "FaceUp"
+[sub_resource type="Animation" id=5]
 length = 0.6
 loop = true
 step = 0.15
@@ -139,17 +152,7 @@ __meta__ = {
 }
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
 shape = SubResource( 1 )
-__meta__ = {
-"_edit_lock_": true
-}
-
-[node name="Camera2D" type="Camera2D" parent="."]
-current = true
-zoom = Vector2( 0.2, 0.2 )
-drag_margin_h_enabled = true
-drag_margin_v_enabled = true
 __meta__ = {
 "_edit_lock_": true
 }
@@ -166,12 +169,20 @@ margin_top = 4.19995
 margin_right = -13.736
 margin_bottom = 5.0
 
-[node name="FacingDirIndicator" type="Polygon2D" parent="."]
-visible = false
-polygon = PoolVector2Array( 0, -7, -3, 3, 3, 3 )
+[node name="ScreenEffects" type="ColorRect" parent="CanvasLayer"]
+material = SubResource( 7 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 14.0
+margin_bottom = 17.0
+color = Color( 0, 0, 0, 1 )
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/FaceDown = SubResource( 2 )
-anims/FaceLeft = SubResource( 4 )
-anims/FaceRight = SubResource( 5 )
-anims/FaceUp = SubResource( 3 )
+anims/FaceLeft = SubResource( 3 )
+anims/FaceRight = SubResource( 4 )
+anims/FaceUp = SubResource( 5 )

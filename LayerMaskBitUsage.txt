@@ -1,0 +1,2 @@
+bit 0 - general walls and other collision
+bit 1 - loading zones
