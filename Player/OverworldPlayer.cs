@@ -1,58 +1,71 @@
 using Godot;
 using System;
 
-enum PlayerStates 
+enum PlayerStates
 {
     Normal, //regular state, walking around, talking to people, etc
-    LoadZoneMovement //player state during the load zone fadeout/fadein
+    WarpZoneMovement //player state during the load zone fadeout/fadein
 }
 public class OverworldPlayer : KinematicBody2D
 {
+    Node Events;
+    Node BetweenMaps;
+
+    const float SPEED = 100;
     PlayerStates currentState = PlayerStates.Normal;
     Vector2 facingDir = new Vector2(0, -1);
+    bool doWalkAnimation = false;
 
     //Normal State Specific
     Vector2 input = new Vector2();
 
-    //LoadZoneMovement State Specific
-    Vector2 loadZoneMoveDir = new Vector2();
+    //WarpZoneMovement State Specific
+    const float TRANSITION_FADE_LENGTH = 0.5f;
 
     public override void _Ready()
     {
-        Input.SetUseAccumulatedInput(false);
-        GetNode("/root/Events").Connect("LoadZoneEntered", this, "MoveToNewMap");
+        Events = GetNode("/root/Events");
+        BetweenMaps = GetNode("/root/BetweenMaps");
+
+        Events.Connect("WarpEntered", this, "MoveToNewMap");
+        Events.Connect("NewMapEntered", this, "OnMapEnter");
     }
-    
+
     public override void _PhysicsProcess(float delta)
     {
         switch (currentState)
         {
             case PlayerStates.Normal:
                 CalculateNormalizedMoveInput();
-                this.MoveAndSlide(input * 100);
+                this.MoveAndSlide(input * SPEED);
                 if (input != Vector2.Zero)
                 {
+                    doWalkAnimation = true;
                     facingDir = input.Normalized();
+                }
+                else 
+                {
+                    doWalkAnimation = false;
                 }
 
                 EntityInteractions();
                 Animate();
                 break;
-            case PlayerStates.LoadZoneMovement:
-                Position += facingDir; //make a new variable for this, reusing variables for different things is a bit gross
+            case PlayerStates.WarpZoneMovement:
+                MoveAndSlide(facingDir * SPEED);
                 Animate();
                 break;
         }
     }
-    
+
     private void CalculateNormalizedMoveInput()
     {
-        //input is a class member
+        //input is a class member, so setting it here makes it global to the class
         input.x = Convert.ToInt32(Input.IsActionPressed("ui_right")) - Convert.ToInt32(Input.IsActionPressed("ui_left"));
         input.y = Convert.ToInt32(Input.IsActionPressed("ui_down")) - Convert.ToInt32(Input.IsActionPressed("ui_up"));
         input = input.Normalized();
     }
-    
+
     private void EntityInteractions()
     {
         if (Input.IsActionJustPressed("ui_accept")) //idea for interaction with stuff: have an Interact() method that will take the normal of collision as an argument, so it can handle animation
@@ -66,57 +79,71 @@ public class OverworldPlayer : KinematicBody2D
             }
         }
     }
-    
+
+    //This method handles animating the player properly depending on what direction is being faced
     private void Animate()
     {
         AnimationPlayer animationPlayer = GetNode<AnimationPlayer>("./AnimationPlayer");
-        if (input == Vector2.Zero)
+        if (!doWalkAnimation)
         {
             animationPlayer.Stop(false);
         }
         else
-        { 
-            if (facingDir.x != 0) //more advanced logic here will be needed once analog inputs are a thing, use trig, 45 degrees should prefer horizontal anims over vertcial
+        {
+            float angle = Mathf.Rad2Deg(Mathf.Atan2(facingDir.x, -facingDir.y));
+            angle = (angle < 0) ? 360 + angle : angle;
+            if (angle > 315 || angle < 45)
             {
-                if (facingDir.x > 0) //since this is a normalized vector, down-right is not quite (1, 1), greater than handles that
-                {
-                    animationPlayer.Play("FaceRight");
-                }
-                else
-                {
-                    animationPlayer.Play("FaceLeft");
-                }
+                animationPlayer.Play("FaceUp");
             }
-            else if (facingDir.y != 0)
+            else if (angle >= 45 && angle <= 135)
             {
-                if (facingDir.y > 0) 
-                {
-                    animationPlayer.Play("FaceDown");
-                }
-                else
-                {
-                    animationPlayer.Play("FaceUp");
-                }
+                animationPlayer.Play("FaceRight");
+            }
+            else if (angle > 135 && angle < 225)
+            {
+                animationPlayer.Play("FaceDown");
+            }
+            else if (angle >= 225 && angle <= 315)
+            {
+                animationPlayer.Play("FaceLeft");
             }
         }
     }
-    
+
     //sets up the map transition movement and Movement, and then moves to the new map
-    public async void MoveToNewMap(string targetMapScenePath, int targetEntrance, Vector2 targetMovePosition) //targetMovePosition refers to where the player should move to during the fadeout
+    //this is called by the WarpEntered signal defined in the Events singleton, and that signal is emitted by Warps
+    public async void MoveToNewMap(Node2D entrance, string targetMapScenePath, int exitNumber)
     {
-        currentState = PlayerStates.LoadZoneMovement;
-        facingDir = targetMovePosition - Position;
-        facingDir = facingDir.Normalized();
+        //setup the player's movement during the fadeout
+        currentState = PlayerStates.WarpZoneMovement;
+        facingDir = (entrance.Position - Position).Normalized(); //setup the direction the player will walk in during the fade
+        doWalkAnimation = true;
 
-        GetNode("/root/Events").EmitSignal("FadeScreen", true);
+        GetNode("/root/BetweenMaps").Call("PrepareForMapChange", exitNumber, facingDir);
 
-        await ToSignal(GetTree().CreateTimer(1.0f), "timeout");
+        Events.EmitSignal("FadeScreen", true, TRANSITION_FADE_LENGTH);
+        await ToSignal(GetTree().CreateTimer(TRANSITION_FADE_LENGTH), "timeout");
+
         GetTree().ChangeScene(targetMapScenePath);
     }
 
     //Called when the player enters a new map and needs to animate into the map correctly
-    public void OnMapEnter(Vector2 EntrancePosition)
+    //this is called by the NewMapEntered signal defined in the Events singleton, and that signal is emitted by the BetweenMaps singleton
+    public async void OnMapEnter(Node2D exit, Vector2 playerMoveDir)
     {
+        //setup the player's movement during the fadein
+        Position = exit.Position;
+        facingDir = playerMoveDir;
+        doWalkAnimation = true;
+        currentState = PlayerStates.WarpZoneMovement;
 
+        Events.EmitSignal("FadeScreen", false, TRANSITION_FADE_LENGTH);
+
+        //stop the movement once the player is outside the entrance collision shape
+        await ToSignal(exit, "body_exited"); 
+
+        BetweenMaps.Call("MapChangeFinished");
+        currentState = PlayerStates.Normal;
     }
 }

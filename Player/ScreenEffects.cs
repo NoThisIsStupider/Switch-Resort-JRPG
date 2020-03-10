@@ -7,6 +7,9 @@ public class ScreenEffects : ColorRect
     float from = 0;
     float to = 1;
     float weight = 0;
+
+    float fadeTime = 1;
+
     public override void _Ready()
     {
         GetNode("/root/Events").Connect("FadeScreen", this, "BeginFade");
@@ -15,7 +18,7 @@ public class ScreenEffects : ColorRect
 
     public override void _Process(float delta)
     {
-        weight += delta;
+        weight += delta / fadeTime;
 
         (Material as ShaderMaterial).SetShaderParam("fadeLevel", Mathf.Lerp(from, to, weight));
 
@@ -25,8 +28,10 @@ public class ScreenEffects : ColorRect
         }
     }
 
-    public void BeginFade(bool isFadeout)
+    //a fadeLength variable should be added since right now the fade can only be for 1 second
+    public void BeginFade(bool isFadeout, float fadeTime)
     {
+        this.fadeTime = fadeTime;
         if (isFadeout)
         {
             from = 0;

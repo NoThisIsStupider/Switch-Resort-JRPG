@@ -12,6 +12,7 @@ public class Textbox : MarginContainer
         timer.OneShot = true;
     }
 
+    //maybe change this method to be disabled unless a textbox is being shown, look at ScreenEffects.cs for reference
     public override void _Process(float delta)
     {
         if (isMessageOpen && timer.IsStopped() && Input.IsActionJustPressed("ui_accept")) //used current for dismissing the textbox, very quick and dirty, replace with more complex logic later (like checking that the textbox is even open first)

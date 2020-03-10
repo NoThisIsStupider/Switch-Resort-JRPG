@@ -13,9 +13,12 @@ public class Events : Node
     
     [Signal]
     //The player uses this to know when to change between maps
-    delegate void LoadZoneEntered(string targetMapScenePath, int targetEntrance, Vector2 thisEntrancePosition); 
+    delegate void WarpEntered(Node2D entrance, string targetMapScenePath, int exitNumber); 
     //could be good to have multiple transition types (eg door, outdoor path, etc), maybe make an enum in Events to keep track?
 
     [Signal]
-    delegate void FadeScreen(bool isFadeout);
+    delegate void NewMapEntered(Node2D entranceNode, Vector2 playerMoveDir);
+
+    [Signal]
+    delegate void FadeScreen(bool isFadeout, float fadeTime);
 }
