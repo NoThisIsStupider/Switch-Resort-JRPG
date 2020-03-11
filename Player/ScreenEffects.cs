@@ -7,7 +7,6 @@ public class ScreenEffects : ColorRect
     float from = 0;
     float to = 1;
     float weight = 0;
-
     float fadeTime = 1;
 
     public override void _Ready()

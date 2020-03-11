@@ -11,7 +11,19 @@ public class BetweenMaps : Node
 
     private void SetupNewMap()
     {
-        Node exit = (Node) (GetTree().CurrentScene.Get("Warps") as Godot.Collections.Dictionary)[exitNumber];
+        Node exit = null;
+        foreach (Node warp in GetTree().GetNodesInGroup("Warps"))
+        {
+            if ((int) warp.Get("warpNumber") == exitNumber)
+            {
+                exit = warp;
+                break;
+            }
+        }
+        if (exit == null)
+        {
+            throw new Exception($"Specified exit ({exitNumber}) was not found");
+        }
         GetNode("/root/Events").EmitSignal("NewMapEntered", exit, storedPlayerMoveDirection);
     }
 

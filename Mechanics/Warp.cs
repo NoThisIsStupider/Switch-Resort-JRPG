@@ -4,7 +4,7 @@ using System;
 public class Warp : Godot.Area2D
 {
     [Export]
-    int entranceNumber = 0;
+    int warpNumber = 0;
     [Export]
     string targetMapScenePath = "";
     [Export]

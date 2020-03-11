@@ -1,21 +1,16 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 //This singleton is used to hold signals that need to be used in a publish-subscribe fashion
 
 public class Events : Node
-{
-    [Signal]
-    //Used for Textboxes to show a simple message
-    delegate void ShowMessage(string message); 
-    //perhaps add more signals for more ways of calling show message?
-    //idea: one signal for messages can have a delegate passed that uses yield to pass each successive string or command to the message box, could be pretty interesting and flexible
-    
+{    
     [Signal]
     //The player uses this to know when to change between maps
     delegate void WarpEntered(Node2D entrance, string targetMapScenePath, int exitNumber); 
-    //could be good to have multiple transition types (eg door, outdoor path, etc), maybe make an enum in Events to keep track?
 
+    //signal used by BetweenMaps.cs to call the players method to setup for the new map (maybe adjust the naming here?)
     [Signal]
     delegate void NewMapEntered(Node2D entranceNode, Vector2 playerMoveDir);
 

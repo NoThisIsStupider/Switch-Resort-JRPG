@@ -1,14 +1,13 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Player/OverworldPlayer.cs" type="Script" id=1]
 [ext_resource path="res://Player/tempplayer.png" type="Texture" id=2]
-[ext_resource path="res://Mechanics/Textbox.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Player/ScreenEffects.cs" type="Script" id=4]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 7.42507
 
-[sub_resource type="Shader" id=6]
+[sub_resource type="Shader" id=2]
 code = "shader_type canvas_item; 
 
 uniform float fadeLevel = 0;
@@ -17,12 +16,11 @@ void fragment() {
 	COLOR.a = fadeLevel;
 }"
 
-[sub_resource type="ShaderMaterial" id=7]
-shader = SubResource( 6 )
+[sub_resource type="ShaderMaterial" id=3]
+shader = SubResource( 2 )
 shader_param/fadeLevel = 0.0
 
-[sub_resource type="Animation" id=2]
-resource_name = "FaceDown"
+[sub_resource type="Animation" id=4]
 length = 0.6
 loop = true
 step = 0.15
@@ -51,8 +49,7 @@ tracks/1/keys = {
 "values": [ Vector2( 1, 1 ) ]
 }
 
-[sub_resource type="Animation" id=3]
-resource_name = "FaceLeft"
+[sub_resource type="Animation" id=5]
 length = 0.6
 loop = true
 step = 0.15
@@ -81,8 +78,7 @@ tracks/1/keys = {
 "values": [ Vector2( 1, 1 ) ]
 }
 
-[sub_resource type="Animation" id=4]
-resource_name = "FaceRight"
+[sub_resource type="Animation" id=6]
 length = 0.6
 loop = true
 step = 0.15
@@ -111,7 +107,7 @@ tracks/1/keys = {
 "values": [ Vector2( -1, 1 ) ]
 }
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=7]
 length = 0.6
 loop = true
 step = 0.15
@@ -160,18 +156,8 @@ __meta__ = {
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="Textbox" parent="CanvasLayer" instance=ExtResource( 3 )]
-visible = false
-anchor_left = 0.162
-anchor_top = 0.833
-anchor_right = 0.864
-margin_left = -13.888
-margin_top = 4.19995
-margin_right = -13.736
-margin_bottom = 5.0
-
 [node name="ScreenEffects" type="ColorRect" parent="CanvasLayer"]
-material = SubResource( 7 )
+material = SubResource( 3 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_right = 14.0
@@ -183,7 +169,7 @@ __meta__ = {
 }
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/FaceDown = SubResource( 2 )
-anims/FaceLeft = SubResource( 3 )
-anims/FaceRight = SubResource( 4 )
-anims/FaceUp = SubResource( 5 )
+anims/FaceDown = SubResource( 4 )
+anims/FaceLeft = SubResource( 5 )
+anims/FaceRight = SubResource( 6 )
+anims/FaceUp = SubResource( 7 )

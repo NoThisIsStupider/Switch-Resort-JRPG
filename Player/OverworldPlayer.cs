@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 enum PlayerStates
 {
@@ -61,21 +62,27 @@ public class OverworldPlayer : KinematicBody2D
     private void CalculateNormalizedMoveInput()
     {
         //input is a class member, so setting it here makes it global to the class
-        input.x = Convert.ToInt32(Input.IsActionPressed("ui_right")) - Convert.ToInt32(Input.IsActionPressed("ui_left"));
-        input.y = Convert.ToInt32(Input.IsActionPressed("ui_down")) - Convert.ToInt32(Input.IsActionPressed("ui_up"));
+        input.x = (Input.GetActionStrength("move_right") - Input.GetActionStrength("move_left"));
+	    input.y = (Input.GetActionStrength("move_down") - Input.GetActionStrength("move_up"));
         input = input.Normalized();
     }
 
     private void EntityInteractions()
     {
-        if (Input.IsActionJustPressed("ui_accept")) //idea for interaction with stuff: have an Interact() method that will take the normal of collision as an argument, so it can handle animation
+        if (Input.IsActionJustPressed("interact")) //idea for interaction with stuff: have an Interact() method that will take the normal of collision as an argument, so it can handle animation
         {
+            //cast a ray from the player to look for npcs
             Physics2DDirectSpaceState spaceState = GetWorld2d().DirectSpaceState;
             Godot.Collections.Dictionary intersection = spaceState.IntersectRay(Position, Position + facingDir * 10);
-            if (intersection.Contains("collider"))
+
+            //make sure that the ray both hit something and also that it hit an NPC
+            if (intersection.Contains("collider") && (intersection["collider"] as Node).IsInGroup("NPC"))
             {
-                Node thing = (Node)intersection["collider"];
-                GetNode("/root/Events").EmitSignal("ShowMessage", $"{thing.Name}");
+                StaticNPC npc = intersection["collider"] as StaticNPC;
+                npc.Interact((Vector2) intersection["normal"]); //allow the npc to handle the interaction (add an interface to include the Interact() method)
+                //List<string> test = new List<string>();
+                //test.Add("hi");
+                //GetNode<Textbox>("/root/Textbox").ShowMessage(test);
             }
         }
     }
@@ -127,6 +134,8 @@ public class OverworldPlayer : KinematicBody2D
 
         GetTree().ChangeScene(targetMapScenePath);
     }
+
+    //Might be a good idea to add a direction argument so the movement direction can be rotated properly, use a Vector2 for this
 
     //Called when the player enters a new map and needs to animate into the map correctly
     //this is called by the NewMapEntered signal defined in the Events singleton, and that signal is emitted by the BetweenMaps singleton

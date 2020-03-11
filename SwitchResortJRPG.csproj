@@ -58,6 +58,8 @@
     <Compile Include="Mechanics\Events.cs" />
     <Compile Include="Mechanics\BetweenMaps.cs" />
     <Compile Include="Mechanics\Warp.cs" />
+    <Compile Include="NPC\StaticNPC.cs" />
+    <Compile Include="NPC\NPC.cs" />
     <Compile Include="Player\OverworldPlayer.cs" />
     <Compile Include="Player\ScreenEffects.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

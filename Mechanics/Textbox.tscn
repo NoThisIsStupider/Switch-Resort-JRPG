@@ -2,40 +2,33 @@
 
 [ext_resource path="res://Mechanics/Textbox.cs" type="Script" id=1]
 
-[node name="Textbox" type="MarginContainer"]
-pause_mode = 2
-anchor_top = 0.808
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 252.0
-margin_top = 13.2
-margin_right = -200.0
-margin_bottom = -1.0
+[node name="Textbox" type="Control"]
+margin_right = 40.0
+margin_bottom = 40.0
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Panel" type="Panel" parent="."]
-margin_right = 572.0
-margin_bottom = 100.0
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Panel" type="Panel" parent="CanvasLayer"]
+margin_left = 252.377
+margin_top = 501.019
+margin_right = 824.377
+margin_bottom = 601.019
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="Panel"]
-anchor_left = 0.021
-anchor_top = 0.119
-anchor_right = 0.984
-anchor_bottom = 0.861
-margin_left = -0.012001
-margin_top = -0.0190001
-margin_right = 0.151978
-margin_bottom = 0.0389938
+[node name="Label" type="Label" parent="CanvasLayer/Panel"]
+margin_left = 12.0
+margin_top = 13.1321
+margin_right = 552.0
+margin_bottom = 86.1321
 text = "Test
 "
+autowrap = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="Timer" type="Timer" parent="."]
