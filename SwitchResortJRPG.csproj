@@ -58,10 +58,10 @@
     <Compile Include="Mechanics\Events.cs" />
     <Compile Include="Mechanics\BetweenMaps.cs" />
     <Compile Include="Mechanics\Warp.cs" />
+    <Compile Include="Mechanics\ScreenEffects.cs" />
     <Compile Include="NPC\StaticNPC.cs" />
     <Compile Include="NPC\NPC.cs" />
     <Compile Include="Player\OverworldPlayer.cs" />
-    <Compile Include="Player\ScreenEffects.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

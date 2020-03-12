@@ -25,6 +25,8 @@ public class OverworldPlayer : KinematicBody2D
 
     public override void _Ready()
     {
+        AddToGroup("Player");
+
         Events = GetNode("/root/Events");
         BetweenMaps = GetNode("/root/BetweenMaps");
 
@@ -32,12 +34,16 @@ public class OverworldPlayer : KinematicBody2D
         Events.Connect("NewMapEntered", this, "OnMapEnter");
     }
 
+    public override void _Process(float delta)
+    {
+        CalculateNormalizedMoveInput();
+    }
+
     public override void _PhysicsProcess(float delta)
     {
         switch (currentState)
         {
             case PlayerStates.Normal:
-                CalculateNormalizedMoveInput();
                 this.MoveAndSlide(input * SPEED);
                 if (input != Vector2.Zero)
                 {
@@ -80,9 +86,6 @@ public class OverworldPlayer : KinematicBody2D
             {
                 StaticNPC npc = intersection["collider"] as StaticNPC;
                 npc.Interact((Vector2) intersection["normal"]); //allow the npc to handle the interaction (add an interface to include the Interact() method)
-                //List<string> test = new List<string>();
-                //test.Add("hi");
-                //GetNode<Textbox>("/root/Textbox").ShowMessage(test);
             }
         }
     }

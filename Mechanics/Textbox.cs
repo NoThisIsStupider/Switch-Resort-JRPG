@@ -6,15 +6,15 @@ public class Textbox : Control
 {
     int currentMessageIndex;
     List<string> storedMessages;
-    Control panel;
+    Control background;
     Label label;
 
     public override void _Ready()
     {
-        panel = GetNode<Control>("./CanvasLayer/Panel");
-        label = panel.GetNode<Label>("./Label");
+        background = GetNode<Control>("./CanvasLayer/Background");
+        label = GetNode<Label>("./CanvasLayer/Label");
 
-        changeTextboxVisibility(false); //keep the textbox invisible at first
+        setTextboxVisibility(false); //keep the textbox invisible at first
         SetProcess(false); //don't execute _process every frame unless it is needed
         PauseMode = PauseModeEnum.Process; //make it so the textbox will keep working when everything else is paused
     }
@@ -31,13 +31,12 @@ public class Textbox : Control
             else
             {
                 ExitTextbox();
-            }
-            
+            }    
         }
     }
 
     //this method prepares the textbox to display a list of messages
-    public async void SetupTextbox(List<string> messages)
+    public void SetupTextbox(List<string> messages)
     {
         if (IsProcessing()) //a textbox is open already
         {
@@ -49,26 +48,27 @@ public class Textbox : Control
 
         //make the textbox visible and place the text inside
         label.Text = storedMessages[0];
-        changeTextboxVisibility(true);
+        setTextboxVisibility(true);
         
         //pause everything else and enable processing for the textbox (to check for a close input)
         GetTree().Paused = true;
 
-        //wait a frame before enabling process so that the input for opening the textbox is no longer "just" pressed
-        await ToSignal(GetTree(), "physics_frame");
+        Input.ActionRelease("interact"); //release the interact input so the textbox doesn't instantly advance the first frame it's shown
         SetProcess(true);
     }
 
     public void ExitTextbox()
     {
         //no need to clear the label here since it will be overwritten next time it is used
-        changeTextboxVisibility(false);
+        setTextboxVisibility(false);
         GetTree().Paused = false;
+        Input.ActionRelease("interact"); //release the interact input so the textbox doesn't manage to reopen itself immediately
         SetProcess(false);
     }
 
-    private void changeTextboxVisibility(bool visible)
+    private void setTextboxVisibility(bool visible)
     {
-        panel.Visible = visible;
+        background.Visible = visible;
+        label.Visible = visible;
     }
 }

@@ -55,6 +55,7 @@ shape = SubResource( 1 )
 position = Vector2( 216, 48 )
 
 [node name="Camera2D2" type="Camera2D" parent="YSort/OverworldPlayer"]
+rotating = true
 current = true
 zoom = Vector2( 0.25, 0.25 )
 limit_left = -174

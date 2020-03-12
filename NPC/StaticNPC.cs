@@ -18,6 +18,7 @@ public class StaticNPC : StaticBody2D, NPC
     //this method is responsible for both updating the animation and displaying the dialogue
     public void Interact(Vector2 interactionNormal)
     {
+        
         textbox.SetupTextbox(messages); //the new List creation is used to avoid a crash
     }
 }
