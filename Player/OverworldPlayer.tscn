@@ -4,7 +4,6 @@
 [ext_resource path="res://Player/tempplayer.png" type="Texture" id=2]
 [ext_resource path="res://Mechanics/ScreenEffects.cs" type="Script" id=4]
 
-
 [sub_resource type="CircleShape2D" id=1]
 radius = 7.42507
 

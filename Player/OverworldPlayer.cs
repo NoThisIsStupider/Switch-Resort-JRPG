@@ -30,8 +30,8 @@ public class OverworldPlayer : KinematicBody2D
         Events = GetNode("/root/Events");
         BetweenMaps = GetNode("/root/BetweenMaps");
 
-        Events.Connect("WarpEntered", this, "MoveToNewMap");
-        Events.Connect("NewMapEntered", this, "OnMapEnter");
+        //Events.Connect("WarpEntered", this, "MoveToNewMap");
+        //Events.Connect("NewMapEntered", this, "OnMapEnter");
     }
 
     public override void _Process(float delta)
@@ -122,7 +122,6 @@ public class OverworldPlayer : KinematicBody2D
     }
 
     //sets up the map transition movement and Movement, and then moves to the new map
-    //this is called by the WarpEntered signal defined in the Events singleton, and that signal is emitted by Warps
     public async void MoveToNewMap(Node2D entrance, string targetMapScenePath, int exitNumber)
     {
         //setup the player's movement during the fadeout
@@ -138,17 +137,22 @@ public class OverworldPlayer : KinematicBody2D
         GetTree().ChangeScene(targetMapScenePath);
     }
 
-    //Might be a good idea to add a direction argument so the movement direction can be rotated properly, use a Vector2 for this
-
     //Called when the player enters a new map and needs to animate into the map correctly
-    //this is called by the NewMapEntered signal defined in the Events singleton, and that signal is emitted by the BetweenMaps singleton
-    public async void OnMapEnter(Node2D exit, Vector2 playerMoveDir)
+    public async void OnMapEnter(Warp exit, Vector2 playerMoveDir)
     {
         //setup the player's movement during the fadein
         Position = exit.Position;
         facingDir = playerMoveDir;
         doWalkAnimation = true;
         currentState = PlayerStates.WarpZoneMovement;
+
+        //handle rotation of the facing direction, if needed
+        float outDirectionAngle = Mathf.Atan2(exit.outDirectionNormalized.x, -exit.outDirectionNormalized.y);
+        float angleDifference = facingDir.AngleTo(exit.outDirectionNormalized);
+        if (Mathf.Abs(Mathf.Rad2Deg(angleDifference)) > 45)
+        {
+            facingDir = facingDir.Rotated(outDirectionAngle);
+        }
 
         Events.EmitSignal("FadeScreen", false, TRANSITION_FADE_LENGTH);
 

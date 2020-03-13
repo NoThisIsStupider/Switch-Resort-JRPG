@@ -24,7 +24,9 @@ public class BetweenMaps : Node
         {
             throw new Exception($"Specified exit ({exitNumber}) was not found");
         }
-        GetNode("/root/Events").EmitSignal("NewMapEntered", exit, storedPlayerMoveDirection);
+        //kinda gross but since there is only 1 player this is a way to access it
+        (GetTree().GetNodesInGroup("Player")[0] as Node).Call("OnMapEnter", exit, storedPlayerMoveDirection);
+        //GetNode("/root/Events").EmitSignal("NewMapEntered", exit, storedPlayerMoveDirection);
     }
 
     public void PrepareForMapChange(int exitNumber, Vector2 storedPlayerMoveDirection)

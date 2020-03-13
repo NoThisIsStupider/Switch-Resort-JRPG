@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Player/OverworldPlayer.tscn" type="PackedScene" id=1]
 [ext_resource path="res://NPC/ness.png" type="Texture" id=2]
@@ -10,6 +10,70 @@
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 7.5
 height = 6.0
+
+[sub_resource type="Animation" id=2]
+resource_name = "FaceDown"
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Rect2( 5, 21, 23, 30 ) ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "FaceLeft"
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Rect2( 5, 72, 17, 30 ) ]
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "FaceRight"
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Rect2( 5, 123, 17, 30 ) ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "FaceUp"
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Rect2( 5, 174, 23, 30 ) ]
+}
 
 [node name="SampleMap1" type="Node2D"]
 script = ExtResource( 5 )
@@ -27,13 +91,15 @@ tile_data = PoolIntArray( -917517, 1, 131072, -917516, 1, 131072, -917515, 1, 13
 [node name="Warp0" parent="." instance=ExtResource( 4 )]
 position = Vector2( 344, 48 )
 targetMapScenePath = "res://Maps/SampleMap2.tscn"
-targetExit = 0
+targetExitNumber = 0
+outDirectionNormalized = Vector2( -1, 0 )
 
 [node name="Warp1" parent="." instance=ExtResource( 4 )]
 position = Vector2( 272, -24 )
 warpNumber = 1
 targetMapScenePath = "res://Maps/SampleMap1.tscn"
-targetExit = 1
+targetExitNumber = 1
+outDirectionNormalized = Vector2( 0, 1 )
 
 [node name="YSort" type="YSort" parent="."]
 
@@ -50,6 +116,12 @@ region_rect = Rect2( 5, 21, 23, 30 )
 position = Vector2( 0, 8.5 )
 rotation = 1.5708
 shape = SubResource( 1 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="YSort/Sans"]
+anims/FaceDown = SubResource( 2 )
+anims/FaceLeft = SubResource( 5 )
+anims/FaceRight = SubResource( 4 )
+anims/FaceUp = SubResource( 3 )
 
 [node name="OverworldPlayer" parent="YSort" instance=ExtResource( 1 )]
 position = Vector2( 216, 48 )

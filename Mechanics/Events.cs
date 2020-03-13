@@ -7,13 +7,5 @@ using System.Collections.Generic;
 public class Events : Node
 {    
     [Signal]
-    //The player uses this to know when to change between maps
-    delegate void WarpEntered(Node2D entrance, string targetMapScenePath, int exitNumber); 
-
-    //signal used by BetweenMaps.cs to call the players method to setup for the new map (maybe adjust the naming here?)
-    [Signal]
-    delegate void NewMapEntered(Node2D entranceNode, Vector2 playerMoveDir);
-
-    [Signal]
-    delegate void FadeScreen(bool isFadeout, float fadeTime);
+    delegate void FadeScreen(bool isFadeout, float fadeTime); //try and murder this signal, move the fade thing to a singleton perhaps
 }

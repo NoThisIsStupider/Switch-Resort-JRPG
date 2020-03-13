@@ -22,9 +22,9 @@ config/icon="res://icon.png"
 
 [autoload]
 
-Textbox="*res://Mechanics/Textbox.tscn"
 Events="*res://Mechanics/Events.cs"
 BetweenMaps="*res://Mechanics/BetweenMaps.cs"
+Textbox="*res://Mechanics/Textbox/Textbox.tscn"
 
 [display]
 

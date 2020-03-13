@@ -54,9 +54,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Maps\OverworldMap.cs" />
-    <Compile Include="Mechanics\Textbox.cs" />
     <Compile Include="Mechanics\Events.cs" />
     <Compile Include="Mechanics\BetweenMaps.cs" />
+    <Compile Include="Mechanics\Textbox\Textbox.cs" />
     <Compile Include="Mechanics\Warp.cs" />
     <Compile Include="Mechanics\ScreenEffects.cs" />
     <Compile Include="NPC\StaticNPC.cs" />

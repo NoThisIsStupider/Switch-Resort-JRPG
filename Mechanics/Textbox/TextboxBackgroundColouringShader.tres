@@ -1,0 +1,29 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=2]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+uniform float ysquish = 1f;
+
+void fragment()
+{
+	float uv_y = UV.y - 0.5f;
+	float alpha = 1f;
+	if (uv_y > 0.5 / (1f/ysquish) || uv_y < -0.5 / (1f/ysquish))
+	{
+		alpha = 0f;
+	}
+	
+	uv_y *= 1f/ysquish;
+	uv_y += 0.5f;
+	
+	COLOR = texture(TEXTURE, vec2(UV.x, uv_y));
+	COLOR.a *= alpha;
+	COLOR.r *= 1f - uv_y * 2f + 1f;
+	COLOR.g *= 1f - uv_y * 2f + 1f;
+	COLOR.b *= 1f - uv_y * 2f + 1f;
+}"
+
+[resource]
+shader = SubResource( 1 )
+shader_param/ysquish = 1.0

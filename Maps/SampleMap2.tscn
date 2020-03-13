@@ -18,7 +18,8 @@ tile_data = PoolIntArray( -720916, 1, 131072, -720915, 1, 131072, -720914, 1, 13
 [node name="Warp0" parent="." instance=ExtResource( 4 )]
 position = Vector2( -40, 64 )
 targetMapScenePath = "res://Maps/SampleMap1.tscn"
-targetExit = 0
+targetExitNumber = 0
+outDirectionNormalized = Vector2( 1, 0 )
 
 [node name="YSort" type="YSort" parent="."]
 
