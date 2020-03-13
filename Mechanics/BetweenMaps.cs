@@ -7,6 +7,7 @@ public class BetweenMaps : Node
 {
     int exitNumber;
     Vector2 storedPlayerMoveDirection;
+    Vector2 entranceInDirection;
     bool movingToNewMap = false;
 
     private void SetupNewMap()
@@ -25,14 +26,14 @@ public class BetweenMaps : Node
             throw new Exception($"Specified exit ({exitNumber}) was not found");
         }
         //kinda gross but since there is only 1 player this is a way to access it
-        (GetTree().GetNodesInGroup("Player")[0] as Node).Call("OnMapEnter", exit, storedPlayerMoveDirection);
-        //GetNode("/root/Events").EmitSignal("NewMapEntered", exit, storedPlayerMoveDirection);
+        (GetTree().GetNodesInGroup("Player")[0] as Node).Call("OnMapEnter", exit, storedPlayerMoveDirection, entranceInDirection);
     }
 
-    public void PrepareForMapChange(int exitNumber, Vector2 storedPlayerMoveDirection)
+    public void PrepareForMapChange(int exitNumber, Vector2 storedPlayerMoveDirection, Vector2 entranceOutDirection)
     {
         this.exitNumber = exitNumber;
         this.storedPlayerMoveDirection = storedPlayerMoveDirection;
+        entranceInDirection = new Vector2(-entranceOutDirection.x, -entranceOutDirection.y);
         movingToNewMap = true;
     }
 

@@ -29,9 +29,6 @@ public class OverworldPlayer : KinematicBody2D
 
         Events = GetNode("/root/Events");
         BetweenMaps = GetNode("/root/BetweenMaps");
-
-        //Events.Connect("WarpEntered", this, "MoveToNewMap");
-        //Events.Connect("NewMapEntered", this, "OnMapEnter");
     }
 
     public override void _Process(float delta)
@@ -122,15 +119,14 @@ public class OverworldPlayer : KinematicBody2D
     }
 
     //sets up the map transition movement and Movement, and then moves to the new map
-    public async void MoveToNewMap(Node2D entrance, string targetMapScenePath, int exitNumber)
+    public async void MoveToNewMap(Warp entrance, string targetMapScenePath, int exitNumber)
     {
         //setup the player's movement during the fadeout
         currentState = PlayerStates.WarpZoneMovement;
         facingDir = (entrance.Position - Position).Normalized(); //setup the direction the player will walk in during the fade
         doWalkAnimation = true;
 
-        GetNode("/root/BetweenMaps").Call("PrepareForMapChange", exitNumber, facingDir);
-
+        GetNode("/root/BetweenMaps").Call("PrepareForMapChange", exitNumber, facingDir, entrance.outDirectionNormalized);
         Events.EmitSignal("FadeScreen", true, TRANSITION_FADE_LENGTH);
         await ToSignal(GetTree().CreateTimer(TRANSITION_FADE_LENGTH), "timeout");
 
@@ -138,7 +134,7 @@ public class OverworldPlayer : KinematicBody2D
     }
 
     //Called when the player enters a new map and needs to animate into the map correctly
-    public async void OnMapEnter(Warp exit, Vector2 playerMoveDir)
+    public async void OnMapEnter(Warp exit, Vector2 playerMoveDir, Vector2 entranceInDirection)
     {
         //setup the player's movement during the fadein
         Position = exit.Position;
@@ -147,13 +143,13 @@ public class OverworldPlayer : KinematicBody2D
         currentState = PlayerStates.WarpZoneMovement;
 
         //handle rotation of the facing direction, if needed
-        float outDirectionAngle = Mathf.Atan2(exit.outDirectionNormalized.x, -exit.outDirectionNormalized.y);
-        float angleDifference = facingDir.AngleTo(exit.outDirectionNormalized);
-        if (Mathf.Abs(Mathf.Rad2Deg(angleDifference)) > 45)
+        if (entranceInDirection != exit.outDirectionNormalized)
         {
-            facingDir = facingDir.Rotated(outDirectionAngle);
+            facingDir = facingDir.Rotated(entranceInDirection.AngleTo(exit.outDirectionNormalized));
         }
-
+        GD.Print($"In: {entranceInDirection}");
+        GD.Print($"Out: {exit.outDirectionNormalized}");
+        GD.Print($"Rotation: {Mathf.Rad2Deg(entranceInDirection.AngleTo(exit.outDirectionNormalized))}");
         Events.EmitSignal("FadeScreen", false, TRANSITION_FADE_LENGTH);
 
         //stop the movement once the player is outside the entrance collision shape

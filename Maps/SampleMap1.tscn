@@ -7,11 +7,11 @@
 [ext_resource path="res://Maps/OverworldMap.cs" type="Script" id=5]
 [ext_resource path="res://NPC/StaticNPC.tscn" type="PackedScene" id=6]
 
-[sub_resource type="CapsuleShape2D" id=1]
+[sub_resource type="CapsuleShape2D" id=6]
 radius = 7.5
 height = 6.0
 
-[sub_resource type="Animation" id=2]
+[sub_resource type="Animation" id=7]
 resource_name = "FaceDown"
 length = 0.001
 tracks/0/type = "value"
@@ -28,7 +28,7 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id=5]
-resource_name = "FaceLeft"
+resource_name = "FaceUp"
 length = 0.001
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:region_rect")
@@ -43,7 +43,7 @@ tracks/0/keys = {
 "values": [ Rect2( 5, 72, 17, 30 ) ]
 }
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=8]
 resource_name = "FaceRight"
 length = 0.001
 tracks/0/type = "value"
@@ -59,7 +59,7 @@ tracks/0/keys = {
 "values": [ Rect2( 5, 123, 17, 30 ) ]
 }
 
-[sub_resource type="Animation" id=3]
+[sub_resource type="Animation" id=9]
 resource_name = "FaceUp"
 length = 0.001
 tracks/0/type = "value"
@@ -115,13 +115,13 @@ region_rect = Rect2( 5, 21, 23, 30 )
 [node name="CollisionShape2D" parent="YSort/Sans" index="1"]
 position = Vector2( 0, 8.5 )
 rotation = 1.5708
-shape = SubResource( 1 )
+shape = SubResource( 6 )
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="YSort/Sans"]
-anims/FaceDown = SubResource( 2 )
+[node name="AnimationPlayer" parent="YSort/Sans" index="2"]
+anims/FaceDown = SubResource( 7 )
 anims/FaceLeft = SubResource( 5 )
-anims/FaceRight = SubResource( 4 )
-anims/FaceUp = SubResource( 3 )
+anims/FaceRight = SubResource( 8 )
+anims/FaceUp = SubResource( 9 )
 
 [node name="OverworldPlayer" parent="YSort" instance=ExtResource( 1 )]
 position = Vector2( 216, 48 )
@@ -131,7 +131,7 @@ rotating = true
 current = true
 zoom = Vector2( 0.25, 0.25 )
 limit_left = -174
-limit_top = -98
+limit_top = -147
 limit_right = 475
 limit_bottom = 379
 drag_margin_h_enabled = true
