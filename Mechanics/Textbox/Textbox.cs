@@ -18,6 +18,7 @@ public class Textbox : Control
     //Text Crawl Related
     bool isCrawling = false;
     const float TEXT_CRAWL_SPEED = 50f;
+    int previousVisibleCharacters;
     //Multiple Message Display Related
     int currentMessageIndex;
     List<string> storedMessages;
@@ -29,11 +30,13 @@ public class Textbox : Control
     //Child nodes
     Control background;
     Label label;
+    AudioStreamPlayer audioStreamPlayer;
 
     public override void _Ready()
     {
         background = GetNode<Control>("./CanvasLayer/Background");
         label = GetNode<Label>("./CanvasLayer/Label");
+        audioStreamPlayer = GetNode<AudioStreamPlayer>("./AudioStreamPlayer");
 
         setTextboxVisibility(false); //keep the textbox invisible at first
         SetProcess(false); //don't execute _process every frame unless it is needed
@@ -64,7 +67,9 @@ public class Textbox : Control
                 {
                     label.PercentVisible = 1;
                 }
+                previousVisibleCharacters = label.VisibleCharacters; //have to store this since we adjust via percent instead of characters
                 label.PercentVisible += (delta / storedMessages[currentMessageIndex].Length) * TEXT_CRAWL_SPEED;
+                PlayTextCrawlNoise();
                 if (isTextCrawlReachedEnd())
                 {
                     isCrawling = false;
@@ -94,15 +99,16 @@ public class Textbox : Control
     //this method prepares the textbox to display a list of messages
     public void SetupTextbox(List<string> messages)
     {
-        if (IsProcessing()) //a textbox is open already
+        storedMessages = new List<string>(messages); //the new List creation is used to avoid a crash
+        
+        if (IsProcessing() || storedMessages.Count == 0) //a textbox is open already, or there are no messages to display
         {
             return;
         }
 
         SetupOpenOrClose(true);
 
-        currentMessageIndex = 0; //initialize this so it shows all the messages
-        storedMessages = new List<string>(messages); //the new List creation is used to avoid a crash
+        currentMessageIndex = 0; //initialize this so it shows all the messages, instead of starting from a later index
 
         //make the textbox visible and place the text inside
         label.Text = storedMessages[0];
@@ -163,5 +169,13 @@ public class Textbox : Control
         }
         weight = 0;
         currentState = TextboxStates.OpenOrClose;
+    }
+
+    private void PlayTextCrawlNoise()
+    {
+        if (label.VisibleCharacters > previousVisibleCharacters)
+        {
+            audioStreamPlayer.Play();
+        }
     }
 }

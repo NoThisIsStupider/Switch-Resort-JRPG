@@ -12,7 +12,7 @@ public class OverworldPlayer : KinematicBody2D
     Node Events;
     Node BetweenMaps;
 
-    const float SPEED = 100;
+    const float SPEED = 400;
     PlayerStates currentState = PlayerStates.Normal;
     Vector2 facingDir = new Vector2(0, -1);
     bool doWalkAnimation = false;
@@ -76,7 +76,7 @@ public class OverworldPlayer : KinematicBody2D
         {
             //cast a ray from the player to look for npcs
             Physics2DDirectSpaceState spaceState = GetWorld2d().DirectSpaceState;
-            Godot.Collections.Dictionary intersection = spaceState.IntersectRay(Position, Position + facingDir * 10);
+            Godot.Collections.Dictionary intersection = spaceState.IntersectRay(Position, Position + facingDir * SPEED);
 
             //make sure that the ray both hit something and also that it hit an NPC
             if (intersection.Contains("collider") && (intersection["collider"] as Node).IsInGroup("NPC"))
@@ -147,9 +147,6 @@ public class OverworldPlayer : KinematicBody2D
         {
             facingDir = facingDir.Rotated(entranceInDirection.AngleTo(exit.outDirectionNormalized));
         }
-        GD.Print($"In: {entranceInDirection}");
-        GD.Print($"Out: {exit.outDirectionNormalized}");
-        GD.Print($"Rotation: {Mathf.Rad2Deg(entranceInDirection.AngleTo(exit.outDirectionNormalized))}");
         Events.EmitSignal("FadeScreen", false, TRANSITION_FADE_LENGTH);
 
         //stop the movement once the player is outside the entrance collision shape

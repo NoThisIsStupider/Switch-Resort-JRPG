@@ -35,6 +35,8 @@ public class BetweenMaps : Node
         this.storedPlayerMoveDirection = storedPlayerMoveDirection;
         entranceInDirection = new Vector2(-entranceOutDirection.x, -entranceOutDirection.y);
         movingToNewMap = true;
+
+        GetNode<AudioStreamPlayer>("AudioStreamPlayer").Play();
     }
 
     public void MapChangeFinished()
