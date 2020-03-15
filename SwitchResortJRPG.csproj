@@ -53,15 +53,15 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Maps\OverworldMap.cs" />
-    <Compile Include="Mechanics\Events.cs" />
-    <Compile Include="Mechanics\BetweenMaps.cs" />
-    <Compile Include="Mechanics\Textbox\Textbox.cs" />
-    <Compile Include="Mechanics\Warp.cs" />
-    <Compile Include="Mechanics\ScreenEffects.cs" />
-    <Compile Include="NPC\StaticNPC.cs" />
-    <Compile Include="NPC\NPC.cs" />
-    <Compile Include="Player\OverworldPlayer.cs" />
+    <Compile Include="Code\BetweenMaps.cs" />
+    <Compile Include="Code\OverworldMap.cs" />
+    <Compile Include="Code\OverworldPlayer.cs" />
+    <Compile Include="Code\ScreenEffects.cs" />
+    <Compile Include="Code\StaticNPC.cs" />
+    <Compile Include="Code\INPC.cs" />
+    <Compile Include="Code\Textbox.cs" />
+    <Compile Include="Code\Warp.cs" />
+    <Compile Include="Code\Events.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

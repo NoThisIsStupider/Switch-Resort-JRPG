@@ -1,9 +1,0 @@
-[gd_scene load_steps=2 format=2]
-
-[ext_resource path="res://Maps/PKMNTileset.tres" type="TileSet" id=1]
-
-[node name="PokemonTilemap" type="TileMap"]
-tile_set = ExtResource( 1 )
-cell_size = Vector2( 16, 16 )
-cell_quadrant_size = 64
-format = 1

@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/DragonQuest11WarpSFX.ogg-ea65c45be8f5f59ea4a0c814a4457ada.oggstr"
+
+[deps]
+
+source_file="res://Assets/SFX/Warp/DragonQuest11WarpSFX.ogg"
+dest_files=[ "res://.import/DragonQuest11WarpSFX.ogg-ea65c45be8f5f59ea4a0c814a4457ada.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

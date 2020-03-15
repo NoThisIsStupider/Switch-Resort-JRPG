@@ -16,16 +16,17 @@ _global_script_class_icons={
 [application]
 
 config/name="SwitchResortJRPG"
-run/main_scene="res://Maps/SampleMap1.tscn"
+run/main_scene="res://Scenes/Maps/Demo1/SampleMap1.tscn"
 boot_splash/bg_color=Color( 0.141176, 0.141176, 0.141176, 1 )
 config/icon="res://icon.png"
 
 [autoload]
 
-Events="*res://Mechanics/Events.cs"
-Textbox="*res://Mechanics/Textbox/Textbox.tscn"
-BackgroundMusic="*res://Music/BackgroundMusic.tscn"
-BetweenMaps="*res://Mechanics/BetweenMaps.tscn"
+Events="*res://Code/Events.cs"
+Textbox="*res://Scenes/Textbox.tscn"
+BackgroundMusic="*res://Scenes/BackgroundMusic.tscn"
+BetweenMaps="*res://Scenes/BetweenMaps.tscn"
+ScreenEffects="*res://Scenes/ScreenEffects.tscn"
 
 [display]
 
