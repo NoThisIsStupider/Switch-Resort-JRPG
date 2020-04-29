@@ -27,6 +27,7 @@ Textbox="*res://Scenes/Textbox.tscn"
 BackgroundMusic="*res://Scenes/BackgroundMusic.tscn"
 BetweenMaps="*res://Scenes/BetweenMaps.tscn"
 ScreenEffects="*res://Scenes/ScreenEffects.tscn"
+ManualSceneSwitcher="*res://Code/ManualSceneSwitcher.cs"
 
 [display]
 

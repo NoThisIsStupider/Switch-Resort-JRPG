@@ -688,6 +688,7 @@ tile_data = PoolIntArray( -1179663, 3, 0, -1179662, 3, 0, -1179661, 3, 0, -11796
 
 [node name="Warp0" parent="." instance=ExtResource( 4 )]
 position = Vector2( 320, -184 )
+targetMap = "Demo1/SampleMap2.tscn"
 targetMapScenePath = "Demo1/SampleMap2.tscn"
 targetExitNumber = 1
 outDirectionNormalized = Vector2( 0, 1 )

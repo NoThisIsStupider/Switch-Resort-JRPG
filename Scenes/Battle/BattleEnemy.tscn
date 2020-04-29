@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Code/Battle/Creature.cs" type="Script" id=1]
+[ext_resource path="res://Assets/Art/Enemies/DragonQuest1Enemies.png" type="Texture" id=2]
+
+[node name="BattleEnemy" type="Node2D"]
+position = Vector2( 96, 320 )
+script = ExtResource( 1 )
+CreatureName = "Enemy"
+MaxHealth = 50
+Attack = 7
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 32, 64, 31, 31 )

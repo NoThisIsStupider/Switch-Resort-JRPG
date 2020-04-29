@@ -89,7 +89,7 @@ tile_data = PoolIntArray( -917517, 1, 131072, -917516, 1, 131072, -917515, 1, 13
 
 [node name="Warp0" parent="." instance=ExtResource( 4 )]
 position = Vector2( 1360, 192 )
-targetMapScenePath = "Demo1/SampleMap2.tscn"
+targetMap = "Demo1/SampleMap2.tscn"
 targetExitNumber = 0
 outDirectionNormalized = Vector2( -1, 0 )
 
@@ -119,4 +119,14 @@ anims/FaceUp = SubResource( 5 )
 [node name="OverworldPlayer" parent="YSort" instance=ExtResource( 1 )]
 position = Vector2( 904, 280 )
 
+[node name="Camera" parent="YSort/OverworldPlayer" index="1"]
+limit_left = -423
+limit_top = -231
+limit_right = 1592
+limit_bottom = 1409
+drag_margin_h_enabled = false
+drag_margin_v_enabled = false
+
 [editable path="YSort/Sans"]
+
+[editable path="YSort/OverworldPlayer"]

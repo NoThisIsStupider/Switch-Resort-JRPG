@@ -76,7 +76,7 @@ public class OverworldPlayer : KinematicBody2D
         {
             //cast a ray from the player to look for npcs
             Physics2DDirectSpaceState spaceState = GetWorld2d().DirectSpaceState;
-            Godot.Collections.Dictionary intersection = spaceState.IntersectRay(Position, Position + facingDir * SPEED);
+            Godot.Collections.Dictionary intersection = spaceState.IntersectRay(Position, Position + facingDir * 45);
 
             //make sure that the ray both hit something and also that it hit an NPC
             if (intersection.Contains("collider") && (intersection["collider"] as Node).IsInGroup("NPC"))

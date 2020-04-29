@@ -6,7 +6,7 @@ public class Warp : Godot.Area2D
     [Export]
     int warpNumber = 0;
     [Export]
-    string targetMapScenePath = "";
+    string targetMap = "";
     [Export]
     int targetExitNumber = -1;
     [Export]
@@ -23,10 +23,9 @@ public class Warp : Godot.Area2D
     {
         if (!GetNode<BetweenMaps>("/root/BetweenMaps").movingToNewMap)
         {
-            //GetNode("/root/Events").EmitSignal("WarpEntered", this, targetMapScenePath, targetExitNumber);
             if (body.IsInGroup("Player"))
             {
-                body.Call("MoveToNewMap", this, targetMapScenePath, targetExitNumber);
+                body.Call("MoveToNewMap", this, targetMap, targetExitNumber);
             }
         }
     }

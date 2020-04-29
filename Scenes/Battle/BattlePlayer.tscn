@@ -1,0 +1,77 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Assets/Fonts/chronotype/ChronoType.tres" type="DynamicFont" id=1]
+[ext_resource path="res://Code/Battle/Creature.cs" type="Script" id=2]
+[ext_resource path="res://Assets/Art/Player/tempplayer.png" type="Texture" id=3]
+[ext_resource path="res://Code/Battle/Player/PlayerHealthBar.cs" type="Script" id=4]
+[ext_resource path="res://Scenes/Battle/PlayerTurnHandler.cs" type="Script" id=5]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.443137, 0.909804, 0.294118, 1 )
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0.631373, 0, 0, 1 )
+
+[node name="BattlePlayer" type="Node2D"]
+position = Vector2( 912, 288 )
+script = ExtResource( 2 )
+CreatureName = "Player"
+MaxHealth = 80
+Attack = 8
+
+[node name="PlayerTurnHandler" type="Node" parent="."]
+script = ExtResource( 5 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="PlayerTurnHandler"]
+
+[node name="Attack" type="Button" parent="PlayerTurnHandler/CanvasLayer"]
+margin_left = 152.0
+margin_top = 424.0
+margin_right = 376.0
+margin_bottom = 495.0
+custom_fonts/font = ExtResource( 1 )
+text = "Attack"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Defend" type="Button" parent="PlayerTurnHandler/CanvasLayer"]
+margin_left = 384.0
+margin_top = 424.0
+margin_right = 608.0
+margin_bottom = 495.0
+custom_fonts/font = ExtResource( 1 )
+text = "Defend"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Run" type="Button" parent="PlayerTurnHandler/CanvasLayer"]
+margin_left = 616.0
+margin_top = 424.0
+margin_right = 840.0
+margin_bottom = 495.0
+custom_fonts/font = ExtResource( 1 )
+text = "Run"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PlayerSprite" type="Sprite" parent="."]
+texture = ExtResource( 3 )
+region_enabled = true
+region_rect = Rect2( 0, 12, 92, 68 )
+
+[node name="PlayerHealthBar" type="ProgressBar" parent="."]
+margin_left = -56.0
+margin_top = -64.0
+margin_right = 56.0
+margin_bottom = -42.0
+custom_styles/fg = SubResource( 1 )
+custom_styles/bg = SubResource( 2 )
+value = 100.0
+percent_visible = false
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}

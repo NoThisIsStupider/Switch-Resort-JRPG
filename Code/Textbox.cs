@@ -16,7 +16,6 @@ public class Textbox : Control
 {
     TextboxStates currentState;
     //Text Crawl Related
-    bool isCrawling = false;
     const float TEXT_CRAWL_SPEED = 50f;
     int previousVisibleCharacters;
     //Multiple Message Display Related
@@ -72,7 +71,6 @@ public class Textbox : Control
                 PlayTextCrawlNoise();
                 if (isTextCrawlReachedEnd())
                 {
-                    isCrawling = false;
                     currentState = TextboxStates.WaitingForAdvanceInput;
                 }
                 break;
@@ -150,7 +148,6 @@ public class Textbox : Control
     private void SetupTextCrawl()
     {
         label.VisibleCharacters = 0;
-        isCrawling = true;
         currentState = TextboxStates.TextCrawl;
     }
 

@@ -53,6 +53,8 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Code\Battle\BattleController.cs" />
+    <Compile Include="Code\Battle\Player\PlayerHealthBar.cs" />
     <Compile Include="Code\BetweenMaps.cs" />
     <Compile Include="Code\OverworldMap.cs" />
     <Compile Include="Code\OverworldPlayer.cs" />
@@ -62,7 +64,10 @@
     <Compile Include="Code\Textbox.cs" />
     <Compile Include="Code\Warp.cs" />
     <Compile Include="Code\Events.cs" />
+    <Compile Include="Code\ManualSceneSwitcher.cs" />
+    <Compile Include="Code\Battle\Creature.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scenes\Battle\PlayerTurnHandler.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
