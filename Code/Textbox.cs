@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 
 //TODO here:
-//Add in a textbox opening/closing animation, use the ysquish property of the shader to implement 
+//Add some way of keeping the textbox open between messages, perhaps an extra argument?
 
 enum TextboxStates
 {
@@ -36,6 +36,8 @@ public class Textbox : Control
         background = GetNode<Control>("./CanvasLayer/Background");
         label = GetNode<Label>("./CanvasLayer/Label");
         audioStreamPlayer = GetNode<AudioStreamPlayer>("./AudioStreamPlayer");
+
+        (background.Material as ShaderMaterial).SetShaderParam("ysquish", 0); //make 100% sure the textbox starts off squished
 
         setTextboxVisibility(false); //keep the textbox invisible at first
         SetProcess(false); //don't execute _process every frame unless it is needed
@@ -78,13 +80,14 @@ public class Textbox : Control
                 weight += delta / ANIMATION_LENGTH;
                 if (weight >= 1)
                 {
-                    (background.Material as ShaderMaterial).SetShaderParam("ysquish", 1);
                     if (from == 0) //did the textbox start closed?
                     {
+                        (background.Material as ShaderMaterial).SetShaderParam("ysquish", 1); //make sure you don't overshoot the target value
                         SetupTextCrawl();
                     }
                     else 
                     {
+                        (background.Material as ShaderMaterial).SetShaderParam("ysquish", 0); //make sure you don't overshoot the target value
                         ExitTextbox();
                     }
                     break;
@@ -95,6 +98,7 @@ public class Textbox : Control
     }
 
     //this method prepares the textbox to display a list of messages
+    //TODO: Change this name
     public void SetupTextbox(List<string> messages)
     {
         storedMessages = new List<string>(messages); //the new List creation is used to avoid a crash
@@ -117,6 +121,11 @@ public class Textbox : Control
 
         Input.ActionRelease("interact"); //release the interact input so the textbox doesn't instantly advance the first frame it's shown
         SetProcess(true);
+    }
+
+    public void SetupTextbox(string message)
+    {
+        SetupTextbox(new List<string>() {message});
     }
 
     public void ExitTextbox()

@@ -8,20 +8,25 @@
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
 
-uniform float ysquish = 1f;
+//This shader is used to control the opening and closing animation of the textbox, as well as properly shading the textbox (the texture has no shading)
+
+uniform float ysquish = 0f;
 
 void fragment()
 {
-	float uv_y = UV.y - 0.5f;
+	float uv_y = UV.y - 0.5f; //translate the texture down so it's centered on 0, that way division can be used on it
 	float alpha = 1f;
-	if (uv_y > 0.5 / (1f/ysquish) || uv_y < -0.5 / (1f/ysquish))
+	
+	//make the pixel transparent when it falls outside the bounds of the textbox after squishing
+	if (uv_y > 0.5 * ysquish || uv_y < -0.5 * ysquish)
 	{
 		alpha = 0f;
 	}
 	
-	uv_y *= 1f/ysquish;
-	uv_y += 0.5f;
+	uv_y *= 1f/ysquish; //divide by ysquish so the texture is squished
+	uv_y += 0.5f; //reverse the previous subtract so the texture is returned to being placed correctly
 	
+	//this block handles drawing the colour and shading the textbox
 	COLOR = texture(TEXTURE, vec2(UV.x, uv_y));
 	COLOR.a *= alpha;
 	COLOR.r *= 1f - uv_y * 2f + 1f;
@@ -69,10 +74,10 @@ __meta__ = {
 }
 
 [node name="Label" type="Label" parent="CanvasLayer"]
-anchor_left = 0.0310938
-anchor_top = 0.735096
-anchor_right = 0.953117
-anchor_bottom = 0.921762
+anchor_left = 0.0281641
+anchor_top = 0.710096
+anchor_right = 0.973625
+anchor_bottom = 0.973429
 margin_left = 0.16
 margin_top = -1.05743
 margin_right = 0.00793457

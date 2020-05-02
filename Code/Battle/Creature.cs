@@ -29,47 +29,61 @@ class Creature : Node2D
 
     [Signal] delegate void TurnFinished();
     [Signal] delegate void HealthChanged();
+    [Signal] delegate void CreateMessage(string message);
 
     [Export] public string CreatureName { get; set; }
-    //maybe move this gross stuff to a struct? and then temporary and regular can be their own instance of the struct? lose the getters though
+
+    //practical values include temporary stuff
     [Export] public int MaxHealth { get;set; }
-    public int Health { get;set; }
-    public int temporaryHealth;
+    public int MaxHealthPractical { get { return MaxHealth + maxHealthTemporary; }} //Current Health can never be greater than this value
+    public int maxHealthTemporary = 0;
+    public int HealthCurrent { get;set; }
+
     [Export] public int Attack { get;set; }
-    public int temporaryAttack;
+    public int attackTemporary;
+    public int attackPractical { get {return Attack + attackTemporary;} }
+
     public int Magic { get;set; }
-    public int temporaryMagic;
+    public int magicTemporary;
+    public int magicPractical { get {return Magic + magicTemporary;} }
+
     public int Defense { get;set; }
-    public int temporaryDefense;
+    public int defenseTemporary;
+    public int defensePractical { get {return Defense + defenseTemporary;} }
+
     public int Agility { get;set; }
-    public int temporaryAgility;
+    public int agilityTemporary;
+    public int agilityPractical { get {return Agility + agilityTemporary;} }
 
     StatusEffects currentStatus;
     Dictionary<StatusEffects, float> statusResistances;
 
     public override void _Ready()
     {
-        playerTurnHandler = GetNode<PlayerTurnHandler>("./PlayerTurnHandler");
+        playerTurnHandler = GetNodeOrNull<PlayerTurnHandler>("./PlayerTurnHandler");
 
-        Health = MaxHealth;
+        HealthCurrent = MaxHealthPractical;
         AddToGroup("AliveInBattle");
     }
 
     public void BasicAttack(Creature target)
     {
+        EmitSignal("CreateMessage", $"{CreatureName} attacks {target.CreatureName}");
         target.TakeDamage(Attack);
     }
 
     public void TakeDamage(int attackStrength)
     {
         //there'll have to be logic for subtracting from temporary hp here as well
-        Health -= Mathf.Max(attackStrength - Defense, 0); //Make sure you can never take negative damage
-        EmitSignal("HealthChanged", Health);
+        int damageTaken = Mathf.Max(attackStrength - defensePractical, 0); //Make sure you can never take negative damage
+        EmitSignal("CreateMessage", $"{CreatureName} takes {damageTaken} points of damage");
+        HealthCurrent -= damageTaken; 
+        EmitSignal("HealthChanged", HealthCurrent);
     }
 
     public void Heal(int magicStrength)
     {
-        Health += magicStrength + rng.RandiRange(0, Mathf.FloorToInt(magicStrength * 0.2f));
+        HealthCurrent += magicStrength + rng.RandiRange(0, Mathf.FloorToInt(magicStrength * 0.2f));
     }
 
     public void AttemptInflictStatus(StatusEffects statusToInflict)
@@ -91,7 +105,7 @@ class Creature : Node2D
 
     public void DoTurn() 
     {
-        GD.Print($"{CreatureName} {Health}");
+        GD.Print($"{CreatureName} {HealthCurrent}");
         if (CreatureName == "Enemy")
         {
             foreach (Creature creature in GetTree().GetNodesInGroup("AliveInBattle"))

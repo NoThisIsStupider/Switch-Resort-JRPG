@@ -24,7 +24,14 @@ script = ExtResource( 5 )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="PlayerTurnHandler"]
 
-[node name="Attack" type="Button" parent="PlayerTurnHandler/CanvasLayer"]
+[node name="Control" type="Control" parent="PlayerTurnHandler/CanvasLayer"]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Attack" type="Button" parent="PlayerTurnHandler/CanvasLayer/Control"]
 margin_left = 152.0
 margin_top = 424.0
 margin_right = 376.0
@@ -35,7 +42,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Defend" type="Button" parent="PlayerTurnHandler/CanvasLayer"]
+[node name="Defend" type="Button" parent="PlayerTurnHandler/CanvasLayer/Control"]
 margin_left = 384.0
 margin_top = 424.0
 margin_right = 608.0
@@ -46,7 +53,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Run" type="Button" parent="PlayerTurnHandler/CanvasLayer"]
+[node name="Run" type="Button" parent="PlayerTurnHandler/CanvasLayer/Control"]
 margin_left = 616.0
 margin_top = 424.0
 margin_right = 840.0

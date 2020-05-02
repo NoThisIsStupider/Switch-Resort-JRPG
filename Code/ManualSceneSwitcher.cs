@@ -7,8 +7,7 @@ class ManualSceneSwitcher : Node
     Node battle;
     public override void _Process(float delta)
     {
-        
-        if (Input.IsActionJustPressed("interact"))
+        if (Input.IsKeyPressed((int) Godot.KeyList.B))
         {
             if (battle == null)
             {

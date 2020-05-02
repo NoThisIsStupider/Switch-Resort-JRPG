@@ -7,15 +7,21 @@ using System.Collections.Generic;
 class BattleController : Node2D
 {
     List<Creature> turnOrder = new List<Creature>();
+    List<string> turnMessages = new List<string>();
     int currentTurn = 0;
     bool waitingForTurn = false;
+
+    Textbox textbox;
+
     public override void _Ready()
     {
+        textbox = GetNode<Textbox>("/root/Textbox");
+
         //add some test creatures here while developing
-        Creature player = (Creature) (GD.Load("res://Scenes/Battle/BattlePlayer.tscn") as PackedScene).Instance();
+        Creature player = (Creature)(GD.Load("res://Scenes/Battle/BattlePlayer.tscn") as PackedScene).Instance();
         AddToBattle(player);
 
-        Creature enemy = (Creature) (GD.Load("res://Scenes/Battle/BattleEnemy.tscn") as PackedScene).Instance();
+        Creature enemy = (Creature)(GD.Load("res://Scenes/Battle/BattleEnemy.tscn") as PackedScene).Instance();
         AddToBattle(enemy);
     }
 
@@ -26,8 +32,14 @@ class BattleController : Node2D
         {
 
         }
-        else 
+        else
         {
+            if (currentTurn == 0 && turnMessages.Count > 0)
+            {
+                textbox.SetupTextbox(turnMessages);
+                turnMessages = new List<string>();
+            }
+
             HandleTurn(turnOrder[currentTurn]);
         }
     }
@@ -51,7 +63,7 @@ class BattleController : Node2D
 
     private void EndBattle()
     {
-        
+
     }
 
     private void GenerateTurnOrder()
@@ -73,7 +85,7 @@ class BattleController : Node2D
         {
             return 1;
         }
-        else 
+        else
         {
             return -1;
         }
@@ -84,10 +96,16 @@ class BattleController : Node2D
         //Make sure to run request ready on the creature, in case ready has already been run for that instance
         turnOrder.Add(creature);
         AddChild(creature);
+        creature.Connect("CreateMessage", this, "AddTurnMessage");
     }
 
     private void RemoveFromBattle(Creature creature) //basically, a creature dying
     {
 
+    }
+
+    public void AddTurnMessage(string message)
+    {
+        turnMessages.Add(message);
     }
 }
