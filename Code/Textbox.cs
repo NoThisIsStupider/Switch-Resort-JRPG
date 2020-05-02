@@ -15,6 +15,9 @@ enum TextboxStates
 public class Textbox : Control
 {
     TextboxStates currentState;
+    
+    float advanceTextboxArrowCounter = 0;
+    float advanceTextboxArrowYOrigin;
     //Text Crawl Related
     const float TEXT_CRAWL_SPEED = 50f;
     int previousVisibleCharacters;
@@ -29,17 +32,21 @@ public class Textbox : Control
     //Child nodes
     Control background;
     Label label;
+    Sprite advanceTextboxArrow;
     AudioStreamPlayer audioStreamPlayer;
 
     public override void _Ready()
     {
         background = GetNode<Control>("./CanvasLayer/Background");
         label = GetNode<Label>("./CanvasLayer/Label");
+        advanceTextboxArrow = GetNode<Sprite>("./CanvasLayer/AdvanceTextboxArrow");
+        advanceTextboxArrowYOrigin = advanceTextboxArrow.Position.y;
         audioStreamPlayer = GetNode<AudioStreamPlayer>("./AudioStreamPlayer");
 
         (background.Material as ShaderMaterial).SetShaderParam("ysquish", 0); //make 100% sure the textbox starts off squished
 
         setTextboxVisibility(false); //keep the textbox invisible at first
+        advanceTextboxArrow.Visible = false;
         SetProcess(false); //don't execute _process every frame unless it is needed
         PauseMode = PauseModeEnum.Process; //make it so the textbox will keep working when everything else is paused
     }
@@ -49,8 +56,10 @@ public class Textbox : Control
         switch (currentState)
         {
             case TextboxStates.WaitingForAdvanceInput:
+                HandleAdvanceTextboxArrow(delta);
                 if (Input.IsActionJustPressed("interact"))
                 {
+                    advanceTextboxArrow.Visible = false;
                     currentMessageIndex++;
                     if (currentMessageIndex < storedMessages.Count)
                     {
@@ -143,6 +152,7 @@ public class Textbox : Control
         currentState = TextboxStates.OpenOrClose;
     }
 
+    //the arrow isn't set in here since more fine control of when it becomes visible is necessary
     private void setTextboxVisibility(bool visible)
     {
         background.Visible = visible;
@@ -183,5 +193,12 @@ public class Textbox : Control
         {
             audioStreamPlayer.Play();
         }
+    }
+
+    private void HandleAdvanceTextboxArrow(float delta)
+    {
+        advanceTextboxArrow.Visible = true;
+        advanceTextboxArrowCounter += delta * 10;
+        advanceTextboxArrow.Position = new Vector2(advanceTextboxArrow.Position.x, advanceTextboxArrowYOrigin + Mathf.Sin(advanceTextboxArrowCounter) * 2);
     }
 }
