@@ -1,12 +1,13 @@
 [gd_scene load_steps=57 format=2]
 
 [ext_resource path="res://Scenes/OverworldPlayer.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Code/OverworldMap.cs" type="Script" id=2]
+[ext_resource path="res://Code/Overworld/OverworldMap.cs" type="Script" id=2]
 [ext_resource path="res://Assets/Art/Tilesets/Lttp_grass_water_trees.png" type="Texture" id=3]
 [ext_resource path="res://Scenes/Warp.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Scenes/StaticNPCBase.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Assets/Art/NPCs/DillyPFPTransparent.png" type="Texture" id=6]
 [ext_resource path="res://Assets/Art/NPCs/fozzStevenTransparent.png" type="Texture" id=7]
+
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 0, 0, 64, 0, 64, 64, 0, 64 )

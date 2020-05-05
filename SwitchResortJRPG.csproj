@@ -55,19 +55,23 @@
   <ItemGroup>
     <Compile Include="Code\Battle\BattleController.cs" />
     <Compile Include="Code\Battle\Player\PlayerHealthBar.cs" />
-    <Compile Include="Code\BetweenMaps.cs" />
-    <Compile Include="Code\OverworldMap.cs" />
-    <Compile Include="Code\OverworldPlayer.cs" />
-    <Compile Include="Code\ScreenEffects.cs" />
-    <Compile Include="Code\StaticNPC.cs" />
-    <Compile Include="Code\INPC.cs" />
-    <Compile Include="Code\Textbox.cs" />
-    <Compile Include="Code\Warp.cs" />
-    <Compile Include="Code\Events.cs" />
-    <Compile Include="Code\ManualSceneSwitcher.cs" />
+    <Compile Include="Code\InventoryItem.cs" />
+    <Compile Include="Code\Overworld\OverworldMap.cs" />
+    <Compile Include="Code\Overworld\OverworldPlayer.cs" />
+    <Compile Include="Code\Overworld\StaticNPC.cs" />
+    <Compile Include="Code\Overworld\Warp.cs" />
+    <Compile Include="Code\Singletons\BetweenMaps.cs" />
+    <Compile Include="Code\Singletons\ScreenEffects.cs" />
+    <Compile Include="Code\Singletons\Events.cs" />
+    <Compile Include="Code\Singletons\ManualSceneSwitcher.cs" />
+    <Compile Include="Code\Singletons\PlayerInformation.cs" />
+    <Compile Include="Code\Overworld\INPC.cs" />
+    <Compile Include="Code\Textbox\Textbox.cs" />
+    <Compile Include="Code\Textbox\TextboxBackground.cs" />
     <Compile Include="Code\Battle\Creature.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scenes\Battle\PlayerTurnHandler.cs" />
+    <Compile Include="Scenes\ItemList.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

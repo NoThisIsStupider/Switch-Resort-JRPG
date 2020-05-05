@@ -1,43 +1,17 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Assets/SFX/TextCrawl/snd_txtsans.wav" type="AudioStream" id=1]
 [ext_resource path="res://Assets/Fonts/chronotype/ChronoType.tres" type="DynamicFont" id=2]
-[ext_resource path="res://Code/Textbox.cs" type="Script" id=3]
-[ext_resource path="res://Assets/Art/Textbox/test.png" type="Texture" id=4]
+[ext_resource path="res://Code/Textbox/Textbox.cs" type="Script" id=3]
+[ext_resource path="res://Code/Textbox/TextboxBackground.cs" type="Script" id=4]
 [ext_resource path="res://Assets/Art/Textbox/AdvanceTextboxArrow.png" type="Texture" id=5]
+[ext_resource path="res://Code/Shaders/ChronoTriggerTextboxBackground.shader" type="Shader" id=6]
+[ext_resource path="res://Assets/Art/Textbox/NormalTextboxBG.png" type="Texture" id=7]
 
-[sub_resource type="Shader" id=1]
-code = "shader_type canvas_item;
-
-//This shader is used to control the opening and closing animation of the textbox, as well as properly shading the textbox (the texture has no shading)
-
-uniform float ysquish = 0f;
-
-void fragment()
-{
-	float uv_y = UV.y - 0.5f; //translate the texture down so it's centered on 0, that way division can be used on it
-	float alpha = 1f;
-	
-	//make the pixel transparent when it falls outside the bounds of the textbox after squishing
-	if (uv_y > 0.5 * ysquish || uv_y < -0.5 * ysquish)
-	{
-		alpha = 0f;
-	}
-	
-	uv_y *= 1f/ysquish; //divide by ysquish so the texture is squished
-	uv_y += 0.5f; //reverse the previous subtract so the texture is returned to being placed correctly
-	
-	//this block handles drawing the colour and shading the textbox
-	COLOR = texture(TEXTURE, vec2(UV.x, uv_y));
-	COLOR.a *= alpha;
-	COLOR.r *= 1f - uv_y * 2f + 1f;
-	COLOR.g *= 1f - uv_y * 2f + 1f;
-	COLOR.b *= 1f - uv_y * 2f + 1f;
-}"
-
-[sub_resource type="ShaderMaterial" id=2]
-shader = SubResource( 1 )
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 6 )
 shader_param/ysquish = 1.0
+shader_param/size_y = null
 
 [node name="Textbox" type="Control"]
 margin_right = 40.0
@@ -56,13 +30,11 @@ wait_time = 0.05
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="Background" type="NinePatchRect" parent="CanvasLayer"]
-material = SubResource( 2 )
+material = SubResource( 1 )
 anchor_top = 0.667
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = -0.200012
-margin_bottom = -0.200012
-texture = ExtResource( 4 )
+texture = ExtResource( 7 )
 region_rect = Rect2( 0, 0, 256, 256 )
 patch_margin_left = 32
 patch_margin_top = 28
@@ -70,6 +42,7 @@ patch_margin_right = 30
 patch_margin_bottom = 32
 axis_stretch_horizontal = 2
 axis_stretch_vertical = 2
+script = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
